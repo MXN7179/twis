@@ -1,0 +1,1199 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"defau",
+				"defaultName"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "auto/configure --with-debug --with-cc=cl --builddir=build \\\n--prefix=D:/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/tmp \\\n--conf-path=conf/nginx.conf --pid-path=logs/nginx.pid \\\n--http-log-path=logs/access.log --error-log-path=logs/error.log \\\n--sbin-path=nginx.exe --http-client-body-temp-path=temp/client_body_temp \\\n--http-proxy-temp-path=temp/proxy_temp \\\n--http-fastcgi-temp-path=temp/fastcgi_temp \\\n--with-cc-opt=-DFD_SETSIZE=1024 --with-pcre=objs/lib/pcre \\\n--with-zlib=objs/lib/zlib --with-openssl=objs/lib/openssl \\\n--with-select_module --with-http_ssl_module \\\n--with-http_sub_module --with-openssl-opt=no-asm\n\n\nauto/configure --with-debug --with-cc=cl --builddir=build \\\n--prefix= \\\n--conf-path=conf/nginx.conf --pid-path=logs/nginx.pid \\\n--http-log-path=logs/access.log --error-log-path=logs/error.log \\\n--sbin-path=nginx.exe --http-client-body-temp-path=temp/client_body_temp \\\n--http-proxy-temp-path=temp/proxy_temp \\\n--http-fastcgi-temp-path=temp/fastcgi_temp \\\n--with-cc-opt=-DFD_SETSIZE=1024 --with-pcre=objs/lib/pcre \\\n--with-zlib=objs/lib/zlib --with-openssl=objs/lib/openssl \\\n--with-select_module --with-http_ssl_module \\\n--with-http_sub_module --with-openssl-opt=no-asm\n\n\n： openresty1.19 -> nginx1.19\ngcc or cl\n\nPCRE=pcre-8.44\nZLIB=zlib-1.2.11\nOPENSSL=openssl-1.1.1k\n\nauto/configure --with-debug --with-cc=gcc --builddir=build \\\n--prefix=. \\\n--conf-path=conf/nginx.conf --pid-path=logs/nginx.pid \\\n--http-log-path=logs/access.log --error-log-path=logs/error.log \\\n--sbin-path=nginx.exe --http-client-body-temp-path=temp/client_body_temp \\\n--http-proxy-temp-path=temp/proxy_temp \\\n--http-fastcgi-temp-path=temp/fastcgi_temp \\\n--with-cc-opt=-DFD_SETSIZE=1024 --with-pcre=objs/lib/$PCRE \\\n--with-zlib=objs/lib/$ZLIB --with-openssl=objs/lib/$OPENSSL \\\n--with-select_module --with-http_ssl_module \\\n--with-http_sub_module --with-openssl-opt=no-asm\n\n\n/d/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx\nD:\\openresty_old\\skylar_srvcomp_nginx_win\\nginx-openresty-windows\\src\\nginx\n\n/d/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1\nD:\\openresty_old\\nginx-release-1.10.1\\nginx-release-1.10.1\\src\n\nD:\\openresty-1.19.9.1\\bundle\\nginx-1.19.9\\src\n\n\ndiff: Makefile: 348:   -def:nginx.def\n\n\nint epfd;\nint nfds;\nstruct epoll_event *events;//malloc\nint listenfd;\t//监听描述符\n1.创建监听套接字listenfd\n2.把listenfd加入epfd套接字表\n\nfor(;;)\n{\n\tnfds = epoll_wait(epfd, events, 20, -1);\n\tif(nfds > 0)\n\t{\n\t\tfor(int i = 0; i < nfds; i++)\n\t\t{\n\t\t\tif(events[i].data.fd == listenfd)\n\t\t\t{\n\t\t\t\tconfd = accept(listenfd, (struct sockaddr *)*clientaddr, &clientlen);\n\t\t\t\tev.data.fd = confd;\n\t\t\t\tev.events = EPOLLIN | EPOLLET;\n\t\t\t\tepoll_ctl(epfd, EPOLL_ADD, confd, &ev);\n\t\t\t}\n\t\t\telse if(event[i].data.fd & EPOLLIN)\n\t\t\t{\n\t\t\t\tsockfd = event[i].data.fd;\n\t\t\t\tn = read(sockfd);\n\t\t\t\tev.data.prt = ..;\n\t\t\t\tev.events = EPOLLOUT | EPOLLET;\n\t\t\t\tepoll_ctl(epfd, EPOLLL_CTL_MOD, sockfd, &ev);\n\t\t\t}\n\t\t\telse if(events[i].data.fd & EPOLLOUT)\n\t\t\t{\n\t\t\t\tvoid *data = event[i].data.ptr;\n\t\t\t\tsockfd = evnet[i].data.fd;\n\t\t\t\twrite(data.fd, );\n\n\t\t\t}\n\t\t}\n\t}\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n#include <stdio.h>\n#include <stdlib.h>\n#include <sys/ioctl.h>\n#include <sys/socket.h>\n#include <sys/time.h>\n#include <netinet/in.h>\n#include <errno.h>\n\n#define SERVER_PORT  12345\n\n#define TRUE             1\n#define FALSE            0\n\nmain (int argc, char *argv[])\n{\n   int    i, len, rc, on = 1;\n   int    listen_sd, max_sd, new_sd;\n   int    desc_ready, end_server = FALSE;\n   int    close_conn;\n   char   buffer[80];\n   struct sockaddr_in6 addr;\n   struct timeval      timeout;\n   fd_set              master_set, working_set;\n\n   /*************************************************************/\n   /* Create an AF_INET6 stream socket to receive incoming      */\n   /* connections on                                            */\n   /*************************************************************/\n   listen_sd = socket(AF_INET6, SOCK_STREAM, 0);\n   if (listen_sd < 0)\n   {\n      perror(\"socket() failed\");\n      exit(-1);\n   }\n\n   /*************************************************************/\n   /* Allow socket descriptor to be reuseable                   */\n   /*************************************************************/\n   rc = setsockopt(listen_sd, SOL_SOCKET,  SO_REUSEADDR,\n                   (char *)&on, sizeof(on));\n   if (rc < 0)\n   {\n      perror(\"setsockopt() failed\");\n      close(listen_sd);\n      exit(-1);\n   }\n\n   /*************************************************************/\n   /* Set socket to be nonblocking. All of the sockets for      */\n   /* the incoming connections will also be nonblocking since   */\n   /* they will inherit that state from the listening socket.   */\n   /*************************************************************/\n   rc = ioctl(listen_sd, FIONBIO, (char *)&on);\n   if (rc < 0)\n   {\n      perror(\"ioctl() failed\");\n      close(listen_sd);\n      exit(-1);\n   }\n\n   /*************************************************************/\n   /* Bind the socket                                           */\n   /*************************************************************/\n   memset(&addr, 0, sizeof(addr));\n   addr.sin6_family      = AF_INET6;\n   memcpy(&addr.sin6_addr, &in6addr_any, sizeof(in6addr_any));\n   addr.sin6_port        = htons(SERVER_PORT);\n   rc = bind(listen_sd,\n             (struct sockaddr *)&addr, sizeof(addr));\n   if (rc < 0)\n   {\n      perror(\"bind() failed\");\n      close(listen_sd);\n      exit(-1);\n   }\n\n   /*************************************************************/\n   /* Set the listen back log                                   */\n   /*************************************************************/\n   rc = listen(listen_sd, 32);\n   if (rc < 0)\n   {\n      perror(\"listen() failed\");\n      close(listen_sd);\n      exit(-1);\n   }\n\n   /*************************************************************/\n   /* Initialize the master fd_set                              */\n   /*************************************************************/\n   FD_ZERO(&master_set);\n   max_sd = listen_sd;\n   FD_SET(listen_sd, &master_set);\n\n   /*************************************************************/\n   /* Initialize the timeval struct to 3 minutes.  If no        */\n   /* activity after 3 minutes this program will end.           */\n   /*************************************************************/\n   timeout.tv_sec  = 3 * 60;\n   timeout.tv_usec = 0;\n\n   /*************************************************************/\n   /* Loop waiting for incoming connects or for incoming data   */\n   /* on any of the connected sockets.                          */\n   /*************************************************************/\n   do\n   {\n      /**********************************************************/\n      /* Copy the master fd_set over to the working fd_set.     */\n      /**********************************************************/\n      memcpy(&working_set, &master_set, sizeof(master_set));\n\n      /**********************************************************/\n      /* Call select() and wait 3 minutes for it to complete.   */\n      /**********************************************************/\n      printf(\"Waiting on select()...\\n\");\n      rc = select(max_sd + 1, &working_set, NULL, NULL, &timeout);\n\n      /**********************************************************/\n      /* Check to see if the select call failed.                */\n      /**********************************************************/\n      if (rc < 0)\n      {\n         perror(\"  select() failed\");\n         break;\n      }\n\n      /**********************************************************/\n      /* Check to see if the 3 minute time out expired.         */\n      /**********************************************************/\n      if (rc == 0)\n      {\n         printf(\"  select() timed out.  End program.\\n\");\n         break;\n      }\n\n      /**********************************************************/\n      /* One or more descriptors are readable.  Need to         */\n      /* determine which ones they are.                         */\n      /**********************************************************/\n      desc_ready = rc;\n      for (i=0; i <= max_sd  &&  desc_ready > 0; ++i)\n      {\n         /*******************************************************/\n         /* Check to see if this descriptor is ready            */\n         /*******************************************************/\n         if (FD_ISSET(i, &working_set))\n         {\n            /****************************************************/\n            /* A descriptor was found that was readable - one   */\n            /* less has to be looked for.  This is being done   */\n            /* so that we can stop looking at the working set   */\n            /* once we have found all of the descriptors that   */\n            /* were ready.                                      */\n            /****************************************************/\n            desc_ready -= 1;\n\n            /****************************************************/\n            /* Check to see if this is the listening socket     */\n            /****************************************************/\n            if (i == listen_sd)\n            {\n               printf(\"  Listening socket is readable\\n\");\n               /*************************************************/\n               /* Accept all incoming connections that are      */\n               /* queued up on the listening socket before we   */\n               /* loop back and call select again.              */\n               /*************************************************/\n               do\n               {\n                  /**********************************************/\n                  /* Accept each incoming connection.  If       */\n                  /* accept fails with EWOULDBLOCK, then we     */\n                  /* have accepted all of them.  Any other      */\n                  /* failure on accept will cause us to end the */\n                  /* server.                                    */\n                  /**********************************************/\n                  new_sd = accept(listen_sd, NULL, NULL);\n                  if (new_sd < 0)\n                  {\n                     if (errno != EWOULDBLOCK)\n                     {\n                        perror(\"  accept() failed\");\n                        end_server = TRUE;\n                     }\n                     break;\n                  }\n\n                  /**********************************************/\n                  /* Add the new incoming connection to the     */\n                  /* master read set                            */\n                  /**********************************************/\n                  printf(\"  New incoming connection - %d\\n\", new_sd);\n                  FD_SET(new_sd, &master_set);\n                  if (new_sd > max_sd)\n                     max_sd = new_sd;\n\n                  /**********************************************/\n                  /* Loop back up and accept another incoming   */\n                  /* connection                                 */\n                  /**********************************************/\n               } while (new_sd != -1);\n            }\n\n            /****************************************************/\n            /* This is not the listening socket, therefore an   */\n            /* existing connection must be readable             */\n            /****************************************************/\n            else\n            {\n               printf(\"  Descriptor %d is readable\\n\", i);\n               close_conn = FALSE;\n               /*************************************************/\n               /* Receive all incoming data on this socket      */\n               /* before we loop back and call select again.    */\n               /*************************************************/\n               do\n               {\n                  /**********************************************/\n                  /* Receive data on this connection until the  */\n                  /* recv fails with EWOULDBLOCK.  If any other */\n                  /* failure occurs, we will close the          */\n                  /* connection.                                */\n                  /**********************************************/\n                  rc = recv(i, buffer, sizeof(buffer), 0);\n                  if (rc < 0)\n                  {\n                     if (errno != EWOULDBLOCK)\n                     {\n                        perror(\"  recv() failed\");\n                        close_conn = TRUE;\n                     }\n                     break;\n                  }\n\n                  /**********************************************/\n                  /* Check to see if the connection has been    */\n                  /* closed by the client                       */\n                  /**********************************************/\n                  if (rc == 0)\n                  {\n                     printf(\"  Connection closed\\n\");\n                     close_conn = TRUE;\n                     break;\n                  }\n\n                  /**********************************************/\n                  /* Data was received                          */\n                  /**********************************************/\n                  len = rc;\n                  printf(\"  %d bytes received\\n\", len);\n\n                  /**********************************************/\n                  /* Echo the data back to the client           */\n                  /**********************************************/\n                  rc = send(i, buffer, len, 0);\n                  if (rc < 0)\n                  {\n                     perror(\"  send() failed\");\n                     close_conn = TRUE;\n                     break;\n                  }\n\n               } while (TRUE);\n\n               /*************************************************/\n               /* If the close_conn flag was turned on, we need */\n               /* to clean up this active connection.  This     */\n               /* clean up process includes removing the        */\n               /* descriptor from the master set and            */\n               /* determining the new maximum descriptor value  */\n               /* based on the bits that are still turned on in */\n               /* the master set.                               */\n               /*************************************************/\n               if (close_conn)\n               {\n                  close(i);\n                  FD_CLR(i, &master_set);\n                  if (i == max_sd)\n                  {\n                     while (FD_ISSET(max_sd, &master_set) == FALSE)\n                        max_sd -= 1;\n                  }\n               }\n            } /* End of existing connection is readable */\n         } /* End of if (FD_ISSET(i, &working_set)) */\n      } /* End of loop through selectable descriptors */\n\n   } while (end_server == FALSE);\n\n   /*************************************************************/\n   /* Clean up all of the sockets that are open                 */\n   /*************************************************************/\n   for (i=0; i <= max_sd; ++i)\n   {\n      if (FD_ISSET(i, &master_set))\n         close(i);\n   }\n}",
+			"settings":
+			{
+				"buffer_size": 15308,
+				"line_ending": "Windows",
+				"name": "auto/configure --with-debug --with-cc=cl --builddi"
+			}
+		},
+		{
+			"file": "/D/openresty-1.19.9.1/conf/nginx.conf",
+			"settings":
+			{
+				"buffer_size": 4488,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/openresty-1.19.9.1.backup/conf/nginx.conf",
+			"settings":
+			{
+				"buffer_size": 4801,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/testngx/testngx/server/fast.go",
+			"settings":
+			{
+				"buffer_size": 1257,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/httpd-2.4.48-o111k-x64-vc15/Apache24/conf/extra/httpd-mpm.conf",
+			"settings":
+			{
+				"buffer_size": 3494,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/httpd-2.4.48-o111k-x64-vc15/Apache24/conf/httpd.conf",
+			"settings":
+			{
+				"buffer_size": 20179,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/_openfiles/maxstdio.c",
+			"settings":
+			{
+				"buffer_size": 221,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/_openfiles/_openfile.c",
+			"settings":
+			{
+				"buffer_size": 252,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/_openfiles/openfile.c",
+			"settings":
+			{
+				"buffer_size": 274,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "package main\nimport (\n\t\"bufio\"\n\t\"flag\"\n\t\"fmt\"\n\t\"net\"\n\t\"os\"\n\t\"strconv\"\n\t\"sync\"\n)\nvar host = flag.String(\"host\", \"10.95.84.95\", \"host\")\nvar port = flag.String(\"port\", \"3333\", \"port\")\nfunc main() {\n\tflag.Parse()\n\tconn, err := net.Dial(\"tcp\", *host+\":\"+*port)//创建套接字并连接到server\n\tif err != nil {\n\t\tfmt.Println(\"Error connecting:\", err)\n\t\tos.Exit(1)\n\t}\n\tdefer conn.Close()\n\tfmt.Println(\"Connecting to \" + *host + \":\" + *port)\n\tvar wg sync.WaitGroup\n\twg.Add(2)\n\tgo handleWrite(conn, &wg)\t//发送数据\n\tgo handleRead(conn, &wg)\t//接收数据\n\twg.Wait()\n}\nfunc handleWrite(conn net.Conn, wg *sync.WaitGroup) {\n\tdefer wg.Done()\n\tfor i := 10; i > 0; i-- {\n\t\t_, e := conn.Write([]byte(\"hello \" + strconv.Itoa(i) + \"\\r\\n\"))\n\t\tif e != nil {\n\t\t\tfmt.Println(\"Error to send message because of \", e.Error())\n\t\t\tbreak\n\t\t}\n\t}\n}\nfunc handleRead(conn net.Conn, wg *sync.WaitGroup) {\n\tdefer wg.Done()\n\treader := bufio.NewReader(conn)\n\tfor i := 1; i <= 10; i++ {\n\t\tline, err := reader.ReadString(byte('\\n'))\n\t\tif err != nil {\n\t\t\tfmt.Print(\"Error to read message because of \", err)\n\t\t\treturn\n\t\t}\n\t\tfmt.Print(line)\n\t}\n}",
+			"file": "/D/go/workspace/src/simple_server/client.go",
+			"file_size": 1161,
+			"file_write_time": 132755778055606266,
+			"settings":
+			{
+				"buffer_size": 1079,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/openresty-1.19.9.1/conf/nginx.conf.grpc",
+			"settings":
+			{
+				"buffer_size": 852,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": " This structure is  filled  in  with  the address  of  the  peer  socket,  as known  to the  communications layer.  The exact format of the address returned addr is determined by the socket's address family ",
+			"settings":
+			{
+				"buffer_size": 207,
+				"line_ending": "Windows",
+				"name": "This structure is  filled  in  with  the address"
+			}
+		},
+		{
+			"file": "/D/openresty-1.19.9.1/logs/debug.log",
+			"settings":
+			{
+				"buffer_size": 21937699,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "package main\n\nimport (\n\t\"flag\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"sync/atomic\"\n\t\"time\"\n)\nvar(\n\taddr = flag.String(\"addr\", \"http://10.95.84.95:8080\", \"\")\n\twaittime = flag.Int(\"wait\", 0, \"\")\n\tcur_num_of_req int32 = 0\n\tcur_num_of_resp int32 = 0\n)\nfunc hello(w http.ResponseWriter, req *http.Request){\n\tatomic.AddInt32(&cur_num_of_req, 1)\n\n\ttime.Sleep(time.Second * time.Duration(*waittime))\n\tfmt.Fprintf(w, \"hello from go-server\\n\")\t//写入resp就返回响应了\n\n\tatomic.AddInt32(&cur_num_of_resp, 1)\n}\nfunc hi(w http.ResponseWriter, req *http.Request){\n\tatomic.AddInt32(&cur_num_of_req, 1)\n\n\ttime.Sleep(time.Second * time.Duration(*waittime))\n\tfmt.Fprintf(w, \"hi from go-server\\n\")\t//写入resp就返回响应了\n\n\tatomic.AddInt32(&cur_num_of_resp, 1)\n}\nfunc headers(w http.ResponseWriter, req *http.Request) {\t//解析request并写response\n\tfor name, headers := range req.Header {\n\t\tfor _, h := range headers {\n\t\t\tfmt.Fprintf(w, \"%v:%v\\n\", name, h)\n\t\t}\n\t}\n}\nfunc main(){\n\tflag.Parse()\n\tfmt.Println(\"listen on \", *addr, \", wait \", int32(*waittime))\n\thttp.HandleFunc(\"/hello\", hello)\n\thttp.HandleFunc(\"/hi\", hi)\n\thttp.HandleFunc(\"/headers\", headers)\n\t//log.Fatal(\"listen on:\", *addr)\n\tgo func() {\n\t\tvar curLink int32 = 0\n\t\tvar i int32 = 0\n\t\tfor range time.Tick(time.Second) {\n\n\t\t\tcurLink = cur_num_of_req - cur_num_of_resp\n\t\t\tif curLink > 0 {\n\t\t\t\ti++\n\t\t\t\tfmt.Println(i, \": req:\", cur_num_of_req, \"resp:\", cur_num_of_resp, \"link\", curLink)\n\t\t\t}\n\t\t}\n\t}()\n\n\tlog.Println(http.ListenAndServe(*addr, nil))\n\treturn\n}",
+			"file": "/D/go/workspace/src/awesomeProject/server.go",
+			"file_size": 1501,
+			"file_write_time": 132767873771811439,
+			"settings":
+			{
+				"buffer_size": 1461,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/go/workspace/src/http/server.go",
+			"settings":
+			{
+				"buffer_size": 462,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "#!/bin/bash\n\ni=1\nsum=0\n\nwhile ((i <= 100))\ndo\n\t((sum+=i))\n\t((i++))\ndone\necho \"$sum\"",
+			"settings":
+			{
+				"buffer_size": 83,
+				"line_ending": "Windows",
+				"name": "#!/bin/bash"
+			}
+		},
+		{
+			"contents": "package main\n\nimport (\n\t\"bufio\"\n\t\"flag\"\n\t\"fmt\"\n\t\"net/http\"\n\t\"strconv\"\n)\nvar ip = flag.String(\"addr\", \"\", \"ip_addr\")\nvar port = flag.Int(\"port\", -1, \"port\")\nvar path = flag.String(\"path\", \"\", \"path\")\n\nfunc main(){\n\tflag.Parse()\t//解析命令行参数\n\t//fmt.Scanf(\"%s %d %s\", &ip, &port, &path)\n\turl := \"http://\" + *ip + \":\" + strconv.Itoa(*port) + *path\n\tfmt.Println(\"url:\", url)\n\tresp, err := http.Get(url)\t//发送get请求并返回\n\tif err != nil{\n\t\tpanic(err)\n\t}\n\tdefer resp.Body.Close()\n\n\tfmt.Println(resp.Status, \"\\n\")\n\n\tscanner := bufio.NewScanner(resp.Body)\n\tfor i := 0; i < 5 && scanner.Scan(); i++{\n\t\tfmt.Println(scanner.Text())\n\t}\n\tif err := scanner.Err(); err != nil{\n\t\tpanic(err)\n\t}\n}\n",
+			"file": "/D/go/workspace/src/awesomeProject/client.go",
+			"file_size": 699,
+			"file_write_time": 132761501563052884,
+			"settings":
+			{
+				"buffer_size": 671,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/_openfiles/server.cpp",
+			"settings":
+			{
+				"buffer_size": 1387,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/_openfiles/client.cpp",
+			"settings":
+			{
+				"buffer_size": 1021,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/_openfiles/tcpsocket.go",
+			"settings":
+			{
+				"buffer_size": 1184,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/gRPC/grpc-go/examples/helloworld/greeter_server/main.go",
+			"settings":
+			{
+				"buffer_size": 1625,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"About"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"install package",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: install Package",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 157.0,
+		"history":
+		[
+			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/maxinning/_viminfo",
+		"/D/testngx/testngx/server/server.go",
+		"/D/压缩包/lua-resty-http-master/lua-resty-http-master/lib/resty/http.lua",
+		"/C/Program Files (x86)/Google/Chrome/Application/93.0.4577.63/93.0.4577.63.manifest",
+		"/D/go/workspace/src/test.go",
+		"/D/go/workspace/src/server.go",
+		"/D/MSYS64/msys2_shell.cmd",
+		"/D/openresty-1.19.9.1/util/build-win32.sh",
+		"/D/go/workspace/src/simple_server/server.go",
+		"/D/httpd-2.4.48-o111k-x64-vc15/Apache24/conf/original/extra/httpd-mpm.conf",
+		"/D/openresty-1.19.9.1.backup/conf/nginx.conf",
+		"/D/gRPC/grpc-go/examples/helloworld/greeter_server/main.go",
+		"/D/gRPC/grpc-go/examples/helloworld/greeter_client/main.go",
+		"/D/gRPC/grpc-go/examples/examples_test.sh",
+		"/D/gRPC/grpc-go/examples/protoc常用命令",
+		"/D/_openfiles/tcpsocket.c",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/config - 副本.bat",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/build_nginx_debug.bat",
+		"/D/openresty-1.19.9.1/conf/nginx.conf.grpc",
+		"/D/openresty-1.19.9.1/conf/nginx.conf.slice",
+		"/D/go/workspace/src/hello.go",
+		"/D/openresty-1.19.9.1/bundle/nginx-1.19.9/auto/cc/msvc",
+		"/D/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/auto/cc/msvc",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/auto/cc/msvc",
+		"/D/openresty-1.19.9.1/logs/debug.log",
+		"/D/OmegaProfile_proxy.pac",
+		"/D/openfile.c",
+		"/D/_openfile.c",
+		"/D/httpd-2.4.48-o111k-x64-vc15/Apache24/conf/extra/httpd-mpm.conf",
+		"/D/openresty-1.19.9.1/conf/nginx.conf.81",
+		"/D/openresty-1.19.9.1/conf/nginx.conf",
+		"/D/openresty-1.19.9.1/conf/nginx.conf.81.backup",
+		"/D/openresty-1.19.9.1/conf/nginx.conf.default",
+		"/D/openresty-1.19.9.1/logs/nginx.pid",
+		"/D/openresty-1.15.8.3-win32/conf/nginx.conf",
+		"/D/openresty-1.19.9.1/logs/error.log",
+		"/D/openresty-1.19.9.1/MakefileDebug",
+		"/D/openresty-1.19.9.1/Makefile",
+		"/D/openresty-1.19.9.1/bundle/ngx_postgres-1.0/config",
+		"/D/openresty-1.19.9.1/bundle/nginx-1.19.9/auto/feature",
+		"/d/openresty-1.19.9.1/conf/nginx.conf",
+		"/D/openresty-1.19.9.1/bundle/nginx-1.19.9/build.sh",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/config.bat",
+		"/D/Microsoft Visual Studio/2019/Community/Common7/IDE/VC/Snippets/2052/Visual C++/pp_if.snippet",
+		"/D/Microsoft Visual Studio/2019/Community/Common7/IDE/VC/Snippets/2052/Visual C++/comment.snippet",
+		"/D/Microsoft Visual Studio/2019/Community/Common7/IDE/VC/Snippets/2052/Visual C++/pp_cfunc.snippet",
+		"/D/openresty-1.19.9.1/logs/debug3.log",
+		"/D/openresty-1.19.9.1/bundle/nginx-1.19.9/build/autoconf.err",
+		"/D/openresty_old/openresty-1.9.15.1/openresty-1.9.15.1/util/build-win32.sh",
+		"/D/openresty-1.15.8.3_bak/bundle/nginx-1.15.8/src/http/modules/ngx_http_limit_conn_module.c",
+		"/D/openresty-1.15.8.3_bak/bundle/nginx-1.15.8/src/http/modules/ngx_http_range_filter_module.c",
+		"/D/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/auto/configure",
+		"/D/openresty-1.19.9.1/bundle/nginx-1.19.9/configure",
+		"/D/openresty-1.19.9.1/nginx.exe",
+		"/D/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/tmp/conf/nginx.conf",
+		"/D/openresty-1.19.9.1/logs/debug2.log",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/build/Makefile",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/nginx.def",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/build/autoconf.err",
+		"/D/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/build/ngx_pch.obj",
+		"/D/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/build/Makefile",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/build/nginx.res",
+		"/D/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/tmp/logs/error.log",
+		"/D/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/tmp/logs/access.log",
+		"/D/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/conf/nginx.conf",
+		"/D/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/build/autoconf.err",
+		"/D/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/Makefile",
+		"/D/nginx/conf/nginx.conf",
+		"/D/nginx/auto/cc/msvc",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/auto/configure",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/MakefileDebug",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/build_all_debug.bat",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/build_cjson.bat",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/build_all_x64.bat",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/CHANGES",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/CHANGES.ru",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/build_cjson_x64.bat",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/build_nginx_x64.bat",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/build_nginx.bat",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/Makefile",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/objs/MakefileDebug",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/objs/Makefile",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/objs/MakefileW64",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/configure",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/build_luajit.bat",
+		"/D/retwis-0.2/retwis-0.2/retwis.sublime-project",
+		"/D/pgsql-9.5.25/Data/pg_hba.conf",
+		"/D/pgsql-9.5.25/Data/postgresql.conf",
+		"/D/openresty-1.19.9.1/conf/nginx.conf.proxy",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/ngx_postgres-1.0rc7/config",
+		"/D/openresty-1.19.9.1/build/nginx-1.19.9/objs/autoconf.err",
+		"/D/openresty-1.19.9.1/build/nginx-1.19.9/objs/autotest.c",
+		"/D/openresty-1.19.9.1/configure",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/Makefile",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/configure",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/build_openssl.bat",
+		"/D/openresty-1.15.8.3_bak/bundle/ngx_postgres-1.0/config",
+		"/d/openresty-1.19.9.1/configure",
+		"/D/openresty-1.19.9.1/bundle/nginx-1.19.9/auto/make",
+		"/D/openresty-1.19.9.1/bundle/ngx_postgres-1.0/CHANGES",
+		"/D/pgsql-9.5.25/Data/postmaster.pid",
+		"/D/openresty-1.19.9.1/bundle/ngx_postgres-1.0/README.md",
+		"/D/openresty-1.19.9.1/bundle/ngx_postgres-1.0/src/ngx_postgres_util.h",
+		"/D/openresty-1.19.9.1/bundle/ngx_postgres-1.0/src/ngx_postgres_util.c",
+		"/D/openresty-1.19.9.1/util/package-win32.sh",
+		"/D/openresty_old/skylar_srvcomp_nginx_win/nginx-openresty-windows/src/nginx/src/core/ngx_cycle.c",
+		"/D/压缩包/httpd-2.4.48-o111k-x64-vc15/Apache24/conf/httpd.conf",
+		"/D/openresty-1.19.9.1/build/nginx-1.19.9/Makefile",
+		"/D/cmake/tutorial/CMakeLists.txt",
+		"/D/cmake/tutorial/t.cpp",
+		"/D/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/auto/lib/md5/make",
+		"/D/openresty_old/nginx-release-1.10.1/nginx-release-1.10.1/auto/lib/md5/makefile.msvc",
+		"/D/gRPC/grpc-go/examples/helloworld/helloworld/helloworld.proto",
+		"/D/gRPC/grpc-go/examples/helloworld/look_server/main.go",
+		"/D/gRPC/grpc-go/examples/helloworld/look_client/main.go",
+		"/D/gRPC/grpc-go/examples/helloworld/helloworld/helloworld_grpc.pb.go",
+		"/D/gRPC/grpc-go/examples/helloworld/helloworld/helloworld.pb.go",
+		"/D/Redis-x64-3.2.100/redis.windows-service.conf",
+		"/C/Users/maxinning/Documents/my_configure_openresty.conf",
+		"/C/Users/maxinning/Documents/1.9.15bak_configure_openresty.conf",
+		"/D/Redis-x64-3.2.100/redis.windows.conf",
+		"/D/go/workspace/src/simple_server/client.go",
+		"/D/openresty-1.19.9.1/build/lua-resty-redis-0.29/lib/resty/redis.lua",
+		"/D/openresty-1.19.9.1/build/nginx-1.19.9/objs/Makefile",
+		"/D/openresty_old/nginx-1.10.3/conf/nginx.conf",
+		"/D/GoLand 2020.1/yht7.com-jihuoma.zip",
+		"/D/GoLand 2020.1/bin/goland.exe",
+		"/D/Beyond Compare 4/BCUnRAR.dll"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			".",
+			"path",
+			"maxclients",
+			"threadsperchild",
+			"thread",
+			"threadperchild",
+			"select ready",
+			"select event",
+			"select add event",
+			"mpm",
+			"\n        ",
+			"4328",
+			"error_log",
+			"ngx_slab_init",
+			"NGINX.DEF",
+			":CORE_LINK=\"$CORE_LINK -link -verbose:lib",
+			"MAIN_LINK=\"-link",
+			"nginx.def",
+			"-verbose:lib -def:nginx.def -debug",
+			"22172",
+			"process: ",
+			"21972",
+			"GetModuleFileName",
+			"Make",
+			"json",
+			"debug",
+			"was not signale",
+			"was not signaled for 5s",
+			"=\"../",
+			"ngx_feature_name",
+			"LIBPQ_INC",
+			"ngx_found",
+			"error",
+			"select ready 1",
+			"select ready 2",
+			"select ready 1",
+			"PLAT",
+			"post",
+			"9.",
+			"debug",
+			"redis",
+			"modules",
+			"redis2",
+			"modules",
+			"maxmemory",
+			"postgre",
+			"with-openssl-opt",
+			"--with-stream_ssl_preread_module",
+			"r",
+			"UnimplementedGreeterServer",
+			"Serve",
+			"helloworld.Look",
+			"helloworld.Greeter",
+			"NewServer",
+			"LookReply()",
+			"LookReply",
+			"GetName",
+			"unimple",
+			"regis",
+			"sayhello",
+			"protocc",
+			"if",
+			"luajit",
+			"OPENSSL",
+			"Configure VC-WIN64A"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			":"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15308,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1245,
+								1245
+							]
+						],
+						"settings":
+						{
+							"auto_name": "auto/configure --with-debug --with-cc=cl --builddi",
+							"default_dir": "D:\\go\\workspace\\src\\simple_server",
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/D/openresty-1.19.9.1/conf/nginx.conf",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4488,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1237,
+								1237
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 857.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/D/openresty-1.19.9.1.backup/conf/nginx.conf",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4801,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								206,
+								206
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/D/testngx/testngx/server/fast.go",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1257,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								1257
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Go/Go.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 108.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/D/httpd-2.4.48-o111k-x64-vc15/Apache24/conf/extra/httpd-mpm.conf",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3494,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1131,
+								1141
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/D/httpd-2.4.48-o111k-x64-vc15/Apache24/conf/httpd.conf",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 20179,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								18624,
+								18624
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1222.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/D/_openfiles/maxstdio.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 221,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								207,
+								207
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/D/_openfiles/_openfile.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 252,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								170,
+								170
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 20,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/D/_openfiles/openfile.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 274,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								274,
+								274
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/D/go/workspace/src/simple_server/client.go",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1079,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								208,
+								208
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Go/Go.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 18,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/D/openresty-1.19.9.1/conf/nginx.conf.grpc",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 852,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								670,
+								670
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 11,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 207,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								207,
+								207
+							]
+						],
+						"settings":
+						{
+							"auto_name": "This structure is  filled  in  with  the address",
+							"default_dir": "D:\\openresty_old\\skylar_srvcomp_nginx_win\\nginx-openresty-windows\\src\\nginx\\src\\core",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/D/openresty-1.19.9.1/logs/debug.log",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 21937699,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 18782.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/D/go/workspace/src/awesomeProject/server.go",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1461,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Go/Go.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/D/go/workspace/src/http/server.go",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 462,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								462,
+								462
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Go/Go.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 83,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								83,
+								83
+							]
+						],
+						"settings":
+						{
+							"auto_name": "#!/bin/bash",
+							"default_dir": "D:\\go\\workspace\\src\\http",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 152.666666667,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "/D/go/workspace/src/awesomeProject/client.go",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 671,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								464,
+								464
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Go/Go.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "/D/_openfiles/server.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1387,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								144,
+								144
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "/D/_openfiles/client.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1021,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								150,
+								150
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "/D/_openfiles/tcpsocket.go",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1184,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								570,
+								570
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Go/Go.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 20,
+					"file": "/D/gRPC/grpc-go/examples/helloworld/greeter_server/main.go",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1625,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								708,
+								708
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Go/Go.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.737119886158,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "retwis.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 137.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
